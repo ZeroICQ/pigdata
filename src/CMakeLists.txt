@@ -1,3 +1,6 @@
+FILE(GLOB QML_SRC "qml/*.qml")
+ADD_CUSTOM_TARGET(QML SOURCES ${QML_SRC})
+
 FILE(GLOB SRC "./*.cpp")
 qtquick_compiler_add_resources(RESOURCES "qml/qml.qrc")
 
