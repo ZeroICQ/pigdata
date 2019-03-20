@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.12
 import Qt.labs.calendar 1.0
 import QtQuick.Dialogs 1.2
 
-
 ApplicationWindow {
     id: window
     visible: true
@@ -18,10 +17,11 @@ ApplicationWindow {
 
         Menu {
             id: fileMenu
-            title: qsTr("File")
+            title: qsTr("&File")
 
             MenuItem {
                 text: qsTr("Open")
+                onTriggered:imageFileDialog.open()
             }
 
         }
@@ -43,20 +43,14 @@ ApplicationWindow {
         }
     }
 
-    FileDialog {
-        id: fileDialog
-        title: "Please choose a file"
-        folder: shortcuts.home
+    ImageFileDialog {
+        id: imageFileDialog
         onAccepted: {
-            console.log("You chose: " + fileDialog.fileUrls)
-            Qt.quit()
-        }
-        onRejected: {
             console.log("Canceled")
             Qt.quit()
         }
-        Component.onCompleted: visible = true
     }
+
 }
 
 

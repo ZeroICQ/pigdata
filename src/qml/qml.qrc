@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/" lang="main">
         <file>main.qml</file>
+        <file>ImageFileDialog.qml</file>
     </qresource>
 </RCC>
