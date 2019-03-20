@@ -63,19 +63,17 @@ ApplicationWindow {
         repeat: true
         onTriggered: {
 //            console.log("interval fired" + image.source)
-            console.log(image.source)
+            console.log(jsonImageModel.filePath)
             //hack
             var prevSource = image.source
-            image.source = ""
-            image.source = heh
         }
     }
 
     ImageFileDialog {
         id: imageFileDialog
         onAccepted: {
-
-            console.log("You chose: " + imageFileDialog.fileUrl)
+            jsonImageModel.filePath = qsTr(imageFileDialog.fileUrl.toString())
+            console.log(jsonImageModel.filePath)
         }
         onRejected: {
             console.log("Canceled")

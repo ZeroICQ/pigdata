@@ -4,7 +4,7 @@ import QtQuick.Dialogs 1.2
 FileDialog {
     id: imageFileDialog
     title: "Please choose a file"
-    folder: shortcuts.home
+    folder: shortcuts.desktop
 //    Component.onCompleted: visible = false
 
 }

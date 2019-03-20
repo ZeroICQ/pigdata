@@ -2,18 +2,20 @@
 
 #include <QObject>
 #include <QQuickImageProvider>
+#include <memory>
+#include <jsonimagemodel.h>
 
 class JsonImageProvider : public QQuickImageProvider
 {
 public:
-    explicit JsonImageProvider();
+    explicit JsonImageProvider(std::shared_ptr<JsonImageModel> imageModel);
 
     ~JsonImageProvider() {}
 
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
 
 private:
-
+std::shared_ptr<JsonImageModel> imageModel_;
 
 signals:
 

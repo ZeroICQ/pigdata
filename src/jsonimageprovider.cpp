@@ -1,6 +1,6 @@
 #include "jsonimageprovider.h"
 
-JsonImageProvider::JsonImageProvider() : QQuickImageProvider(QQuickImageProvider::Pixmap)
+JsonImageProvider::JsonImageProvider(std::shared_ptr<JsonImageModel> imageModel) : QQuickImageProvider(QQuickImageProvider::Pixmap), imageModel_(imageModel)
 {
 
 }
