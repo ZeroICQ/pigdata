@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
 
     engine.addImageProvider(QLatin1String("fromjson"), new JsonImageProvider(imageModel));
 
-
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

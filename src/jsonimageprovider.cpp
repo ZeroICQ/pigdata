@@ -1,27 +1,22 @@
 #include "jsonimageprovider.h"
 
-JsonImageProvider::JsonImageProvider(std::shared_ptr<JsonImageModel> imageModel) : QQuickImageProvider(QQuickImageProvider::Pixmap), imageModel_(imageModel)
+JsonImageProvider::JsonImageProvider(std::shared_ptr<JsonImageModel> imageModel)
+    : QQuickImageProvider(QQuickImageProvider::Image), imageModel_(imageModel)
 {
 
 }
 
-QPixmap JsonImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+QImage JsonImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    static Qt::GlobalColor color = Qt::GlobalColor::red;
-    int width = 100;
-    int height = 50;
 
-   if (size)
-      *size = QSize(width, height);
-
-   QPixmap pixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
-                  requestedSize.height() > 0 ? requestedSize.height() : height);
-
-    pixmap.fill(QColor(color).rgb());
-    if (color == Qt::GlobalColor::red) {
-        color = Qt::GlobalColor::blue;
-    } else {
-        color = Qt::GlobalColor::red;
-    }
-    return pixmap;
+   QImage img(imageModel_->getWidth(), imageModel_->getHeight(), QImage::Format::Format_RGB32);
+   int i = 0,j = 0;
+   for (const auto& y : imageModel_->getNextFrame()) {
+       j = 0;
+       for(const auto& color : y) {
+           img.setPixelColor(i,j++, color);
+       }
+       i++;
+   }
+   return img;
 }

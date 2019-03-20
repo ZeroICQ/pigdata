@@ -12,7 +12,7 @@ public:
 
     ~JsonImageProvider() {}
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
 
 private:
 std::shared_ptr<JsonImageModel> imageModel_;

@@ -53,27 +53,39 @@ ApplicationWindow {
 
     Image {
         id: image
-        source: "image://fromjson/1"
+        source: ""
         cache: false
+        width: 90
+        height: 90
     }
 
     Timer {
+        id: updateImgTimer
         interval: 1000
-        running: true
+        running: false
         repeat: true
         onTriggered: {
-//            console.log("interval fired" + image.source)
-            console.log(jsonImageModel.filePath)
+
             //hack
             var prevSource = image.source
+            image.source = ""
+            image.source = "image://fromjson/1"
         }
     }
 
     ImageFileDialog {
         id: imageFileDialog
         onAccepted: {
-            jsonImageModel.filePath = qsTr(imageFileDialog.fileUrl.toString())
-            console.log(jsonImageModel.filePath)
+            //todo: restart timer. mb stop on open
+
+            var path = imageFileDialog.fileUrl.toString();
+            // remove prefixed "file:///"
+            path = path.replace(/^(file:\/{3})/,"");
+            // unescape html codes like '%23' for '#'
+            var cleanPath = decodeURIComponent(path);
+            jsonImageModel.filePath = cleanPath
+            console.log("accepted " + cleanPath)
+            updateImgTimer.start()
         }
         onRejected: {
             console.log("Canceled")
