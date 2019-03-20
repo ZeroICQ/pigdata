@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import Qt.labs.calendar 1.0
 import QtQuick.Dialogs 1.2
+import Qt.labs.settings 1.1
 
 ApplicationWindow {
     id: window
@@ -12,15 +13,21 @@ ApplicationWindow {
     height: 480
     title: qsTr("pigdata visualizer")
 
+    Settings {
+        id: settings
+        category: "QQControlsFileDialog"
+        property bool sidebarVisible: false
+    }
+
     menuBar: MenuBar {
         id: menuBar
-
+        anchors.top: window.bottom
         Menu {
             id: fileMenu
             title: qsTr("&File")
 
             MenuItem {
-                text: qsTr("Open")
+                text: qsTr("&Open")
                 onTriggered:imageFileDialog.open()
             }
 
@@ -43,11 +50,35 @@ ApplicationWindow {
         }
     }
 
+
+    Image {
+        id: image
+        source: "image://fromjson/1"
+        cache: false
+    }
+
+    Timer {
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: {
+//            console.log("interval fired" + image.source)
+            console.log(image.source)
+            //hack
+            var prevSource = image.source
+            image.source = ""
+            image.source = heh
+        }
+    }
+
     ImageFileDialog {
         id: imageFileDialog
         onAccepted: {
+
+            console.log("You chose: " + imageFileDialog.fileUrl)
+        }
+        onRejected: {
             console.log("Canceled")
-            Qt.quit()
         }
     }
 
