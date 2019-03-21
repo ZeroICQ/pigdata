@@ -61,7 +61,7 @@ ApplicationWindow {
 
     Timer {
         id: updateImgTimer
-        interval: 1000
+        interval: 400
         running: false
         repeat: true
         onTriggered: {

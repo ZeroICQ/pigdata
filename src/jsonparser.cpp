@@ -1,14 +1,14 @@
 #include "jsonparser.h"
 #include <ios>
 
-JsonParser::JsonParser(QString path) : input_(path.toStdString(), std::ios::in)
+JsonParser::JsonParser(QString path) : input_(path.toStdString(), std::ios::in|std::ios::binary)
 {
     char c;
     input_ >> c >> c; //skip [[
-    auto b = input_.peek();
+//    auto b = input_.peek();
     curPos_ = input_.tellg();
     animationStartPos_ = curPos_;
-    auto a = input_.peek();
+//    auto a = input_.peek();
 }
 
 std::vector<std::vector<QColor> > JsonParser::getNextFrame()
@@ -33,18 +33,19 @@ std::vector<std::vector<QColor> > JsonParser::getNextFrame()
                    >> g
                    >> tmp //,
                    >> b
-                   >> tmp >> tmp; //,]
+                   >> tmp; //]
+
+            input_ >> tmp;
+            if (tmp != ',') {
+                input_.putback(tmp);
+            }
 
             curPos_ = input_.tellg();
             //todo: replace with emplace back
             result[y].push_back(QColor(r,g,b));
         }
-
-
     }
 
-    input_ >> tmp; // ]
-    if (input_.peek() == ',')
-        input_>> tmp; // ,
+    input_ >> tmp >> tmp >> tmp;
     return result;
 }
