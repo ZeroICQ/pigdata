@@ -15,7 +15,8 @@ public:
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
 
 private:
-std::shared_ptr<JsonImageModel> imageModel_;
+    static const int SCALE_FACTOR = 50;
+    std::shared_ptr<JsonImageModel> imageModel_;
 
 signals:
 

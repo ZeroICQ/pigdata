@@ -35,7 +35,15 @@ ApplicationWindow {
 
         Menu {
             id: editMenu
-            title: qsTr("&Edit")
+            title: qsTr("&Predefined")
+
+            MenuItem {
+                text: "1"
+                onTriggered: {
+                    jsonImageModel.filePath = "C:/Users/Alexey/Desktop/lab1.json";
+                    updateImgTimer.start()
+                }
+            }
         }
 
         Menu {
@@ -55,8 +63,17 @@ ApplicationWindow {
         id: image
         source: ""
         cache: false
-        width: 90
-        height: 90
+    }
+
+    Slider {
+        from: 1
+        value: 400
+        to: 1000
+        stepSize: 10
+        onMoved: {
+            updateImgTimer.interval = value
+        }
+        anchors.top: image.bottom
     }
 
     Timer {

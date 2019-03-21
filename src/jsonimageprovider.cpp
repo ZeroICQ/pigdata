@@ -8,15 +8,18 @@ JsonImageProvider::JsonImageProvider(std::shared_ptr<JsonImageModel> imageModel)
 
 QImage JsonImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
+    QImage img(
+                SCALE_FACTOR * imageModel_->getWidth(),
+                SCALE_FACTOR * imageModel_->getHeight(),
+                QImage::Format::Format_RGB32);
 
-   QImage img(imageModel_->getWidth(), imageModel_->getHeight(), QImage::Format::Format_RGB32);
-   int i = 0,j = 0;
-   for (const auto& y : imageModel_->getNextFrame()) {
-       j = 0;
-       for(const auto& color : y) {
-           img.setPixelColor(i,j++, color);
-       }
-       i++;
-   }
-   return img;
+    auto nextFramePixels =  imageModel_->getNextFrame();
+
+    for (auto y = 0; y < img.height(); y++) {
+        for(auto x = 0; x < img.width(); x++) {
+
+            img.setPixelColor(x,y, nextFramePixels[y/SCALE_FACTOR][x/SCALE_FACTOR]);
+        }
+    }
+    return img;
 }
