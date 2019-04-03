@@ -34,7 +34,7 @@ void JsonParser::parseMeta()
 
 JsonParser::Pixels JsonParser::parseAnimation()
 {
-    if (input_.eof() || input_.peek() == '}') {
+    if (input_.eof() || input_.peek() == ']') {
         input_.clear();
         input_.seekg(animationStartPos_);
     }
