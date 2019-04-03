@@ -3,17 +3,38 @@
 
 JsonParser::JsonParser(QString path) : input_(path.toStdString(), std::ios::in|std::ios::binary)
 {
-    char c;
-    input_ >> c >> c; //skip [[
-//    auto b = input_.peek();
-    curPos_ = input_.tellg();
-    animationStartPos_ = curPos_;
-//    auto a = input_.peek();
+
 }
 
-std::vector<std::vector<QColor> > JsonParser::getNextFrame()
+void JsonParser::parseMeta()
 {
-    if (input_.eof() || input_.peek() == ']') {
+    char tmpChar;
+    std::string tmpStr;
+    input_.seekg(0, std::ios::beg);
+
+    input_ >> tmpChar   // {
+           >> tmpStr    // "width":
+           >> imgWidth
+           >> tmpChar   // ,
+           >> tmpStr    // "height":
+           >> imgHeight
+           >> tmpChar   //,
+           >> tmpStr    // "frames":
+           >> frames;
+
+    input_ >> tmpChar >> tmpStr >> tmpChar >> tmpChar; // skip "animation"
+
+//    char c;
+//    input_ >> c >> c; //skip [[
+//    auto b = input_.peek();
+//    curPos_ = ;
+    animationStartPos_ = input_.tellg();
+    isMetaParsed_ = true;
+}
+
+JsonParser::Pixels JsonParser::parseAnimation()
+{
+    if (input_.eof() || input_.peek() == '}') {
         input_.clear();
         input_.seekg(animationStartPos_);
     }
@@ -21,11 +42,11 @@ std::vector<std::vector<QColor> > JsonParser::getNextFrame()
     char tmp;
     int r,g,b;
     std::vector<std::vector<QColor>> result;
-    result.reserve(Y_SIZE);
+    result.reserve(imgHeight);
 
-    for (auto y = 0; y < Y_SIZE; y++) {
+    for (auto y = 0; y < imgHeight; y++) {
         result.emplace_back();
-        for (auto x = 0; x < X_SIZE; x++) {
+        for (auto x = 0; x < imgWidth; x++) {
 
             input_ >> tmp //[
                    >> r
@@ -48,4 +69,11 @@ std::vector<std::vector<QColor> > JsonParser::getNextFrame()
 
     input_ >> tmp >> tmp >> tmp;
     return result;
+}
+
+std::vector<std::vector<QColor> > JsonParser::getNextFrame()
+{
+    if (!isMetaParsed_)
+        parseMeta();
+    return parseAnimation();
 }

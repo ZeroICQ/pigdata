@@ -16,13 +16,11 @@ public:
     void setFilePath(QString filePath);
 
     std::vector<std::vector<QColor>> getNextFrame();
-    int getWidth() { return  width_; }
-    int getHeight() { return height_; }
+    int getWidth() { return  parser_->imgWidth; }
+    int getHeight() { return parser_->imgHeight; }
 
 private:
     QString filePath_;
-    int width_ = 3;
-    int height_ = 3;
     std::shared_ptr<JsonParser> parser_;
 
     void loadFirstFrame();

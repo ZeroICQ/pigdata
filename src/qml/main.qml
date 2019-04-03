@@ -40,7 +40,7 @@ ApplicationWindow {
             MenuItem {
                 text: "1"
                 onTriggered: {
-                    jsonImageModel.filePath = "C:/Users/Alexey/Desktop/lab1.json";
+                    jsonImageModel.filePath = "/home/alexey/dev/pigdata/pigdata/data/file1_3_3.json";
                     updateImgTimer.start()
                 }
             }

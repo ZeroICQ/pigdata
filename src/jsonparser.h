@@ -7,14 +7,23 @@
 
 class JsonParser
 {
+    using Pixels = std::vector<std::vector<QColor>>;
+
 public:
     explicit JsonParser(QString path);
-    std::vector<std::vector<QColor>> getNextFrame();
+    Pixels getNextFrame();
+    size_t imgWidth;
+    size_t imgHeight;
+    size_t frames;
 
 private:
-    static const int X_SIZE = 3;
-    static const int Y_SIZE = 3;
     std::ifstream input_;
     long long curPos_ = 0;
     long long animationStartPos_ = 0;
+    bool isMetaParsed_ = false;
+    // image meta
+
+
+    void parseMeta();
+    Pixels parseAnimation();
 };
