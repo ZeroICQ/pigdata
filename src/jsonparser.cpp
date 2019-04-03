@@ -3,7 +3,7 @@
 
 JsonParser::JsonParser(QString path) : input_(path.toStdString(), std::ios::in|std::ios::binary)
 {
-
+    input_.exceptions( std::ifstream::failbit | std::ifstream::badbit);
 }
 
 void JsonParser::parseMeta()
@@ -34,19 +34,22 @@ void JsonParser::parseMeta()
 
 JsonParser::Pixels JsonParser::parseAnimation()
 {
-    if (input_.eof() || input_.peek() == ']') {
+//    if (input_.eof() || input_.peek() == '}') {
+    if (curFrame == frames) {
         input_.clear();
         input_.seekg(animationStartPos_);
+        curFrame = 0;
     }
+    curFrame++;
 
     char tmp;
     int r,g,b;
     std::vector<std::vector<QColor>> result;
     result.reserve(imgHeight);
 
-    for (auto y = 0; y < imgHeight; y++) {
+    for (auto x = 0; x < imgWidth; x++) {
         result.emplace_back();
-        for (auto x = 0; x < imgWidth; x++) {
+        for (auto y = 0; y < imgHeight; y++) {
 
             input_ >> tmp //[
                    >> r
@@ -63,7 +66,7 @@ JsonParser::Pixels JsonParser::parseAnimation()
 
             curPos_ = input_.tellg();
             //todo: replace with emplace back
-            result[y].push_back(QColor(r,g,b));
+            result[x].push_back(QColor(r,g,b));
         }
     }
 

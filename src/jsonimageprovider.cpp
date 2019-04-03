@@ -18,7 +18,7 @@ QImage JsonImageProvider::requestImage(const QString &id, QSize *size, const QSi
     for (auto y = 0; y < img.height(); y++) {
         for(auto x = 0; x < img.width(); x++) {
 
-            img.setPixelColor(y,x, nextFramePixels[y/SCALE_FACTOR][x/SCALE_FACTOR]);
+            img.setPixelColor(x, y, nextFramePixels[x/SCALE_FACTOR][y/SCALE_FACTOR]);
         }
     }
     return img;

@@ -21,6 +21,7 @@ private:
     long long curPos_ = 0;
     long long animationStartPos_ = 0;
     bool isMetaParsed_ = false;
+    size_t curFrame = 0;
     // image meta
 
 
