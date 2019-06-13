@@ -5,6 +5,6 @@ data <- read.csv("titanic_train.csv")
 
 dev <- round(sd(data$Fare), digits = 2)
 med <- round(median(data$Fare), digits = 2)
-common <- data.frame(dev, med)
-mm <- t(common)
-qplot(common) + xlim(1000) + ylim(100)
+cm <- c(dev, med)
+
+qplot(c("dev", "med"), cm)
